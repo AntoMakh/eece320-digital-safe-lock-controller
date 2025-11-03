@@ -14,31 +14,53 @@ module keypad_encoder(
     always @(*) begin
         // count number of keys pressed
         // dual key policy says select higher-index key
-        // priority policy says select lower-index ke
+        // priority policy says select lower-index key
         // set both to -1 as default
-        pressed_keys_count = 0;
-        msb_pressed = -1;
-        lsb_pressed = -1;
-        for(integer i = 0; i < 12; i = i+1) begin
-            if(key[i] == 1'b1) begin
-                pressed_keys_count = pressed_keys_count + 1;
-                msb_pressed = i; // last value it takes is that of last pressed key
-                if(lsb_pressed == -1) begin
-                    lsb_pressed = i; // will only set it once
-                end
-            end
-        end
+        pressed_keys_count = key[0] + key[1] + key[2] + key[3] + key[4] + key[5] + key[6] + key[7] + key[8] + key[9] + key[10] + key[11];
         
         if(pressed_keys_count == 0) begin
             valid = 1'b0;
         end else if(pressed_keys_count == 1) begin
             valid  = 1'b1;
-            selected_key_index = lsb_pressed; // only bit pressed is lsb or msb
+            if(key[11] == 1'b1) selected_key_index = 11;
+            else if(key[10] == 1'b1) selected_key_index = 10;
+            else if(key[9] == 1'b1) selected_key_index = 9;
+            else if(key[8] == 1'b1) selected_key_index = 8;
+            else if(key[7] == 1'b1) selected_key_index = 7;
+            else if(key[6] == 1'b1) selected_key_index = 6;
+            else if(key[5] == 1'b1) selected_key_index = 5;
+            else if(key[4] == 1'b1) selected_key_index = 4;
+            else if(key[3] == 1'b1) selected_key_index = 3;
+            else if(key[2] == 1'b1) selected_key_index = 2;
+            else if(key[1] == 1'b1) selected_key_index = 1;
+            else if(key[0] == 1'b1) selected_key_index = 0;
         end else if(pressed_keys_count == 2) begin
-            selected_key_index = msb_pressed;
+            if(key[11] == 1'b1) selected_key_index = 11;
+            else if(key[10] == 1'b1) selected_key_index = 10;
+            else if(key[9] == 1'b1) selected_key_index = 9;
+            else if(key[8] == 1'b1) selected_key_index = 8;
+            else if(key[7] == 1'b1) selected_key_index = 7;
+            else if(key[6] == 1'b1) selected_key_index = 6;
+            else if(key[5] == 1'b1) selected_key_index = 5;
+            else if(key[4] == 1'b1) selected_key_index = 4;
+            else if(key[3] == 1'b1) selected_key_index = 3;
+            else if(key[2] == 1'b1) selected_key_index = 2;
+            else if(key[1] == 1'b1) selected_key_index = 1;
+            else if(key[0] == 1'b1) selected_key_index = 0;
             valid = 1'b1;
         end else begin
-            selected_key_index = lsb_pressed;
+            if(key[0] == 1'b1) selected_key_index = 0;
+            else if(key[1] == 1'b1) selected_key_index = 1;
+            else if(key[2] == 1'b1) selected_key_index = 2;
+            else if(key[3] == 1'b1) selected_key_index = 3;
+            else if(key[4] == 1'b1) selected_key_index = 4;
+            else if(key[5] == 1'b1) selected_key_index = 5;
+            else if(key[6] == 1'b1) selected_key_index = 6;
+            else if(key[7] == 1'b1) selected_key_index = 7;
+            else if(key[8] == 1'b1) selected_key_index = 8;
+            else if(key[9] == 1'b1) selected_key_index = 9;
+            else if(key[10] == 1'b1) selected_key_index = 10;
+            else if(key[11] == 1'b1) selected_key_index = 11;
             valid = 1'b1;
         end
         // fi ktir redundant statements i will fix later
