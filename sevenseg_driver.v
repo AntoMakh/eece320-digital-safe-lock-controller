@@ -19,11 +19,13 @@ module sevenseg (
             4'b1001: segPreMask = 7'b1111011; // 9
             4'b1100: segPreMask = 7'b1001111; // E
             4'b1101: segPreMask = 7'b0000101; // r
-            4'b1110: segPreMask = 7'b0000000;
+            default: segPreMask = 7'b0000000; // implicitly 1110
         endcase
-    end // if mask is of digit 4 then xor
-    if(segPreMask == 7'b0110011) begin
-        segPreMask = segPreMask ^ GLYPH_MASK;
+        // this only happens when the activated segment corresponds to the glyph target (4)
+        if(segPreMask == 7'b0110011) begin
+            segPreMask = segPreMask ^ GLYPH_MASK;
+        end
+        // polarity is set to 1 -> need to invert result
+        seg = ~segPreMask;
     end
-    seg = ~segPreMask; // common-anode so invert result
 endmodule
