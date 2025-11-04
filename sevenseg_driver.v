@@ -23,7 +23,7 @@ module sevenseg (
         endcase
         // this only happens when the activated segment corresponds to the glyph target (4)
         if(segPreMask == 7'b0110011) begin
-            segPreMask = segPreMask ^ GLYPH_MASK;
+            segPreMask = segPreMask ^ `GLYPH_MASK;
         end
         // polarity is set to 1 -> need to invert result
         seg = ~segPreMask;
