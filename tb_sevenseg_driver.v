@@ -18,11 +18,11 @@ module sevenseg_tb;
         $display("Starting Seven Segment Display Testbench...");
 
         $display("--- Testing all supported glyphs ---");
-
+        // try all possibilities
         for (integer i = 0; i < 16; i = i + 1) begin
             code_TB = i[3:0];
             #10;
-            case (i)
+            case (i) // invert everything because of common anode
                 4'b0000: expected_seg = ~7'b1111110; // 0
                 4'b0001: expected_seg = ~7'b0110000; // 1
                 4'b0010: expected_seg = ~7'b1101101; // 2

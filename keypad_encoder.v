@@ -7,20 +7,25 @@ module keypad_encoder(
     output reg [3:0] code,
     output reg valid  
 );
+    // pressed_keys_count counts how many keys are pressed simultaneously
     integer pressed_keys_count;
-    integer msb_pressed;
-    integer lsb_pressed;
+    // final choice after logic execution
     integer selected_key_index;
     always @(*) begin
-        // count number of keys pressed
+        // general note:
         // dual key policy says select higher-index key
         // priority policy says select lower-index key
-        // set both to -1 as default
+        
+        // count how many keys are simultaneously pressed on the keypad
         pressed_keys_count = key[0] + key[1] + key[2] + key[3] + key[4] + key[5] + key[6] + key[7] + key[8] + key[9] + key[10] + key[11];
         
+        // if no keys are pressed, valid is set to 0
         if(pressed_keys_count == 0) begin
             valid = 1'b0;
-        end else if(pressed_keys_count == 1) begin
+        end
+        // if one key is pressed, the final choice is set to that pressed key
+        // also valid is set to 1
+        else if(pressed_keys_count == 1) begin
             valid  = 1'b1;
             if(key[11] == 1'b1) selected_key_index = 11;
             else if(key[10] == 1'b1) selected_key_index = 10;
@@ -34,7 +39,10 @@ module keypad_encoder(
             else if(key[2] == 1'b1) selected_key_index = 2;
             else if(key[1] == 1'b1) selected_key_index = 1;
             else if(key[0] == 1'b1) selected_key_index = 0;
-        end else if(pressed_keys_count == 2) begin
+        end
+        // keys pressed = 2, then by dual-key policy, select key whose index is highest
+        // set valid to 1
+        else if(pressed_keys_count == 2) begin
             if(key[11] == 1'b1) selected_key_index = 11;
             else if(key[10] == 1'b1) selected_key_index = 10;
             else if(key[9] == 1'b1) selected_key_index = 9;
@@ -48,7 +56,10 @@ module keypad_encoder(
             else if(key[1] == 1'b1) selected_key_index = 1;
             else if(key[0] == 1'b1) selected_key_index = 0;
             valid = 1'b1;
-        end else begin
+        end
+        // if 3 or more keys are pressed, by priority policy, select key whose index is lowest
+        // set valid to 1
+        else begin
             if(key[0] == 1'b1) selected_key_index = 0;
             else if(key[1] == 1'b1) selected_key_index = 1;
             else if(key[2] == 1'b1) selected_key_index = 2;
@@ -63,9 +74,7 @@ module keypad_encoder(
             else if(key[11] == 1'b1) selected_key_index = 11;
             valid = 1'b1;
         end
-        // fi ktir redundant statements i will fix later
-        
-        // encoding (idk i don't like this it seems bulky)
+        // hard-coded encoder, associate each key with code output (as per pdf requirements)
         case (selected_key_index)
             0: code = 4'b0000;
             1: code = 4'b0001;
@@ -79,7 +88,7 @@ module keypad_encoder(
             9: code = 4'b1001;
             10: code = 4'b1010;
             11: code = 4'b1011;
-            default: code = 4'b1110;
+            default: code = 4'b1110; // blank if no key is pressed
         endcase
     end
 endmodule

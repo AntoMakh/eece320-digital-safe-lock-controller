@@ -8,6 +8,7 @@ module keypad_encoder_tb;
     reg [3:0] expected_code;
     reg expected_valid;
     
+    // module instantiation
     keypad_encoder dut (
         .key(key_TB),
         .code(code_TB),
@@ -21,7 +22,7 @@ module keypad_encoder_tb;
             key_TB = 12'b0; // set ev to zero
             key_TB[i] = 1; // set i'th bit to 1;
             #10;
-            // encoding (again i don't like this it seems bulky)
+            // encoding
             case (i)
                 0: expected_code = 4'b0000;
                 1: expected_code = 4'b0001;
