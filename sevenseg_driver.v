@@ -1,6 +1,6 @@
 `include "team_params_202500415_202502112.vh"
 
-module sevenseg (
+module sevenseg_driver (
     input [3:0] code,
     output reg [6:0] seg
 );
