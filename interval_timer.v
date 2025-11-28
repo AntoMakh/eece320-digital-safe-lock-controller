@@ -7,17 +7,17 @@ module interval_timer (
     output done        // asserted when countdown reaches zero
 );
 
-    reg [3:0] counter; // enough bits to hold TIMER_MAX_CYCLES (4 bits)
+    reg [3:0] counter; // enough bits to hold TIMER_MAX_CYCLES = 10 (4 bits)
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            counter <= 4'b0; // reset counter to 0
+            counter <= 4'b1111; // reset to non-zero value
         end
         else if (start) begin
             counter <= 4'd10; // reload the timer
         end
         else if (counter != 0) begin
-            counter <= counter - 1'b1;    // count down
+            counter <= counter - 1'b1; // count down
         end
     end
 

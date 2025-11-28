@@ -27,6 +27,7 @@ module safe_top (
     wire [2:0] display_mode;
     wire lock_int;
 
+    // Gate valid signal to input shift register
     wire gated_valid = keypad_valid & accept_digit;
 
     keypad_encoder u_keypad_encoder (
